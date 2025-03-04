@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">AstronomyAppNoDependencies</string>
+    <string name="placeholder_desc">Image still loading</string>
+    <string name="fab_desc">Adjust view filter</string>
+</resources>
