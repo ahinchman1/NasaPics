@@ -1,6 +1,6 @@
 package com.example.overlay.astronomyappnodependencies.astronomy
 
-import androidx.compose.runtime.Immutable
+import android.view.View
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.overlay.astronomyappnodependencies.util.CoroutineContextDispatcherProvider
@@ -15,7 +15,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-@Immutable
 sealed class AstronomyListViewState {
     data object Loading : AstronomyListViewState()
     data class Content(val list: List<AstronomyPicture>) : AstronomyListViewState()
@@ -31,14 +30,18 @@ class AstronomyListViewModel(
     val viewState: StateFlow<AstronomyListViewState> = _viewState.asStateFlow()
 
     init {
+       loadPhotos()
+    }
+
+    fun loadPhotos() {
         viewModelScope.launch(contextPool.ioDispatcher) {
             when (val initialLoad = repository.retrieveAstronomyPictures()) {
                 is Result.Success -> withContext(contextPool.mainDispatcher) {
-                    _viewState.tryEmit(AstronomyListViewState.Content(initialLoad.data))
+                    _viewState.emit(AstronomyListViewState.Content(initialLoad.data))
                 }
                 is Result.Failure -> withContext(contextPool.mainDispatcher) {
                     val errorMessage = "Unable to load message. Cause: ${initialLoad.error?.message}"
-                    _viewState.tryEmit(AstronomyListViewState.Error(errorMessage))
+                    _viewState.emit(AstronomyListViewState.Error(errorMessage))
                 }
             }
         }
