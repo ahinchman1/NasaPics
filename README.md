@@ -12,3 +12,4 @@ Tech Stack + Architecture:
 - Jetpack Compose
 - Hilt
 - MVVM
+- Coil3
