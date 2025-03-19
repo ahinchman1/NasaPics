@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.overlay.astronomyappnodependencies.databinding.FragmentAstronomyBinding
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -66,18 +67,18 @@ class AstronomyFragment : Fragment() {
             viewModel.viewState.collect { viewState ->
                 Log.d("AstronomyFragment", "viewState: $viewState")
                 when (viewState) {
-                    is AstronomyListViewState.Loading -> withContext(Dispatchers.Main) {
+                    is AstronomyListViewState.Loading -> {
                         spinner.visibility = View.VISIBLE
                         errorMessage.visibility = View.GONE
                         recyclerView.visibility = View.GONE
                     }
-                    is AstronomyListViewState.Content ->  withContext(Dispatchers.Main) {
+                    is AstronomyListViewState.Content -> {
                         spinner.visibility = View.GONE
                         errorMessage.visibility = View.GONE
                         recyclerView.visibility = View.VISIBLE
                         astronomyAdapter.updatePhotos(viewState.list)
                     }
-                    is AstronomyListViewState.Error ->  withContext(Dispatchers.Main) {
+                    is AstronomyListViewState.Error -> {
                         spinner.visibility = View.GONE
                         errorMessage.visibility = View.VISIBLE
                         recyclerView.visibility = View.GONE
