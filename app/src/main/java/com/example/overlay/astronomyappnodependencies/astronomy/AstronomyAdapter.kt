@@ -1,6 +1,5 @@
 package com.example.overlay.astronomyappnodependencies.astronomy
 
-import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -11,7 +10,10 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil3.load
 import coil3.request.crossfade
+import coil3.request.placeholder
+import coil3.request.transformations
 import coil3.size.Scale
+import coil3.transform.CircleCropTransformation
 import com.example.overlay.astronomyappnodependencies.R
 import com.example.overlay.astronomyappnodependencies.databinding.AstronomyListItemBinding
 import com.example.overlay.astronomyappnodependencies.network.api.AstronomyPicture
@@ -75,7 +77,9 @@ class AstronomyViewHolder(
 
         binding.astronomyThumbnail.load(astronomyPicture.url) {
             crossfade(true)
-            scale(Scale.FIT)
+            transformations(CircleCropTransformation())
+            scale(Scale.FILL)
+            placeholder(R.drawable.baseline_image_24)
         }
 
         binding.astronomyTitle.setTextOrHide(astronomyPicture.title)
